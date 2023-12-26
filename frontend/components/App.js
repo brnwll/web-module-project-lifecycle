@@ -43,7 +43,7 @@ export default class App extends React.Component {
       .catch((err) => console.log(err));
   };
 
-  toggleHideCompleted = () => {
+  hideShowCompleted = () => {
     this.setState({ hideCompleted: !this.state.hideCompleted });
   };
 
@@ -55,10 +55,11 @@ export default class App extends React.Component {
           toggleTodo={this.toggleTodo}
           hideCompleted={this.state.hideCompleted}
         />
-        <Form addTodo={this.addTodo} />
-        <button onClick={this.toggleHideCompleted}>
-          {this.state.hideCompleted ? "Show Completed" : "Hide Completed"}
-        </button>
+        <Form
+          addTodo={this.addTodo}
+          hideShowCompleted={this.hideShowCompleted}
+          hideCompleted={this.state.hideCompleted}
+        />
       </div>
     );
   }
