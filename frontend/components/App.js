@@ -17,7 +17,7 @@ export default class App extends React.Component {
   componentDidMount() {
     axios
       .get(URL)
-      .then((res) => this.setState({ todos: res.data.data }))
+      .then((res) => this.setState({ ...this.state, todos: res.data.data }))
       .catch((err) => console.log(err));
   }
 
@@ -25,7 +25,10 @@ export default class App extends React.Component {
     axios
       .post(URL, { name: todo, completed: false })
       .then((res) =>
-        this.setState({ todos: [...this.state.todos, res.data.data] })
+        this.setState({
+          ...this.state,
+          todos: [...this.state.todos, res.data.data],
+        })
       )
       .catch((err) => console.log(err));
   };
@@ -35,6 +38,7 @@ export default class App extends React.Component {
       .patch(`${URL}/${id}`)
       .then((res) => {
         this.setState({
+          ...this.state,
           todos: this.state.todos.map((todo) => {
             return todo.id === id ? res.data.data : todo;
           }),
@@ -44,7 +48,7 @@ export default class App extends React.Component {
   };
 
   hideShowCompleted = () => {
-    this.setState({ hideCompleted: !this.state.hideCompleted });
+    this.setState({ ...this.state, hideCompleted: !this.state.hideCompleted });
   };
 
   render() {
