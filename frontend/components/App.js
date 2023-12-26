@@ -3,7 +3,7 @@ import TodoList from "./TodoList";
 import Form from "./Form";
 import axios from "axios";
 
-const URL = "http://localhost:9000/api/todos";
+const URL = "http://localhost:9000/api/todosX";
 
 export default class App extends React.Component {
   constructor() {
@@ -11,6 +11,7 @@ export default class App extends React.Component {
     this.state = {
       todos: [],
       hideCompleted: false,
+      error: "",
     };
   }
 
@@ -18,7 +19,9 @@ export default class App extends React.Component {
     axios
       .get(URL)
       .then((res) => this.setState({ ...this.state, todos: res.data.data }))
-      .catch((err) => console.log(err));
+      .catch((err) =>
+        this.setState({ ...this.state, error: err.response.data.message })
+      );
   }
 
   addTodo = (todo) => {
@@ -30,7 +33,9 @@ export default class App extends React.Component {
           todos: [...this.state.todos, res.data.data],
         })
       )
-      .catch((err) => console.log(err));
+      .catch((err) =>
+        this.setState({ ...this.state, error: err.response.data.message })
+      );
   };
 
   toggleTodo = (id) => {
@@ -44,7 +49,9 @@ export default class App extends React.Component {
           }),
         });
       })
-      .catch((err) => console.log(err));
+      .catch((err) =>
+        this.setState({ ...this.state, error: err.response.data.message })
+      );
   };
 
   hideShowCompleted = () => {
@@ -59,6 +66,7 @@ export default class App extends React.Component {
           toggleTodo={this.toggleTodo}
           hideCompleted={this.state.hideCompleted}
         />
+        {this.state.error && <p>{this.state.error}</p>}
         <Form
           addTodo={this.addTodo}
           hideShowCompleted={this.hideShowCompleted}
